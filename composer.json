@@ -11,7 +11,9 @@
             "email": "internetov.ru@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "php": "7.2"
+    },
     "autoload": {
         "psr-4": {
             "TheToster\\Leetcode\\": "src/"

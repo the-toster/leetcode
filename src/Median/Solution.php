@@ -23,11 +23,17 @@ final class Solution
         $r = [];
         while (true) {
             if (count($n1) === 0) {
-                return array_merge($r, $n2);
+                foreach ($n2 as $v) {
+                    $r[] = $v;
+                }
+                return $r;
             }
 
             if (count($n2) === 0) {
-                return array_merge($r, $n1);
+                foreach ($n1 as $v) {
+                    $r[] = $v;
+                }
+                return $r;
             }
 
             if ($n1[0] < $n2[0]) {
