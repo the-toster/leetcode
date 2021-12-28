@@ -14,45 +14,56 @@ final class Solution
      */
     public function findMedianSortedArrays(array $nums1, array $nums2): float
     {
-        $merged = $this->merge($nums1, $nums2);
-        return $this->median($merged);
+        $merged = array_merge($nums1, $nums2);
+
+        $size = count($merged);
+        $middle = (int)($size / 2);
+        $m = $this->quickSelect($merged, $middle);
+        if(count($merged) % 2 === 0) {
+           return ($m + $this->quickSelect($merged, $middle - 1)) / 2;
+        }
+
+        return $m;
     }
 
-    private function merge(array $n1, array $n2): array
+    private function quickSelect(array $xs, int $n): float
     {
-        $r = [];
-        while (true) {
-            if (count($n1) === 0) {
-                foreach ($n2 as $v) {
-                    $r[] = $v;
-                }
-                return $r;
-            }
+        $size = count($xs);
 
-            if (count($n2) === 0) {
-                foreach ($n1 as $v) {
-                    $r[] = $v;
-                }
-                return $r;
-            }
+        if ($size === 1) {
+            return $xs[0];
+        }
 
-            if ($n1[0] < $n2[0]) {
-                $r[] = array_shift($n1);
+        $pivot = (int)($size / 2);
+        [$l, $e, $g] = $this->splitList($xs, $pivot);
+
+        if ($n < count($l)) {
+            return $this->quickSelect($l, $n);
+        }
+
+        if ($n < count($l) + count($e)) {
+            return $e[0];
+        }
+
+        return $this->quickSelect($g, $n - count($l) - count($e));
+    }
+
+    private function splitList(array $xs, int $index): array
+    {
+        $l = $e = $g = [];
+
+        foreach ($xs as $x) {
+            $ord = $x <=> $xs[$index];
+            if ($ord > 0) {
+                $g[] = $x;
+            } elseif ($ord < 0) {
+                $l[] = $x;
             } else {
-                $r[] = array_shift($n2);
+                $e[] = $x;
             }
         }
+
+        return [$l, $e, $g];
     }
 
-    private function median(array $arr): float
-    {
-        $n = count($arr);
-
-        if ($n % 2 === 0) {
-            $half = $n / 2;
-            return ($arr[$half - 1] + $arr[$half]) / 2;
-        }
-
-        return $arr[floor($n / 2)];
-    }
 }
