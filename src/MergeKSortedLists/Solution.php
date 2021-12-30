@@ -8,12 +8,13 @@ namespace TheToster\Leetcode\MergeKSortedLists;
 final class Solution
 {
     /**
-     * @param ListNode[] $lists
-     * @return ListNode
+     * @param array<ListNode|null> $lists
      */
-    function mergeKLists(array $lists): ListNode
+    function mergeKLists(array $lists): ?ListNode
     {
         $result = null;
+        $pointer = null;
+        $lists = array_values(array_filter($lists));
         while (count($lists) > 0) {
             $minIndex = null;
             $min = null;
@@ -23,7 +24,6 @@ final class Solution
                     $minIndex = $index;
                 }
             }
-            $r = new ListNode($min);
 
             if ($lists[$minIndex]->next) {
                 $lists[$minIndex] = $lists[$minIndex]->next;
@@ -31,11 +31,17 @@ final class Solution
                 array_splice($lists, $minIndex, 1);
             }
 
+
+            $current = new ListNode($min);
+
             if ($result === null) {
-                $result = $r;
-            } else {
-                $result->next = $r;
+                $result = $current;
+                $pointer = $current;
+                continue;
             }
+
+            $pointer->next = $current;
+            $pointer = $current;
         }
 
         return $result;

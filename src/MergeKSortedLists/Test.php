@@ -15,18 +15,24 @@ final class Test extends TestCase
     {
         $s = new Solution();
         $node = new ListNode(1);
-        $this->assertEquals($node, $s->mergeKLists([$node]));
+//        $this->assertEquals($node, $s->mergeKLists([$node]));
+//
+//        $this->assertEquals(
+//            $this->arrayToList([1, 1, 2, 3, 4, 4, 5, 6]),
+//            $s->mergeKLists(
+//                [
+//                    $this->arrayToList([1, 4, 5]),
+//                    $this->arrayToList([1, 3, 4]),
+//                    $this->arrayToList([2, 6])
+//                ]
+//            )
+//        );
+//
+//        $this->assertEquals(null, $s->mergeKLists([]));
+//        $this->assertEquals(null, $s->mergeKLists([null]));
 
-        $this->assertEquals(
-            $this->arrayToList([1, 1, 2, 3, 4, 4, 5, 6]),
-            $s->mergeKLists(
-                [
-                    $this->arrayToList([1, 4, 5]),
-                    $this->arrayToList([1, 3, 4]),
-                    $this->arrayToList([2, 6])
-                ]
-            )
-        );
+
+        $this->assertEquals($node, $s->mergeKLists([null, $node]));
     }
 
     private function arrayToList(array $arr): ListNode
@@ -35,13 +41,10 @@ final class Test extends TestCase
             throw new \InvalidArgumentException();
         }
 
-        $r = null;
-        foreach ($arr as $item) {
-            if ($r) {
-                $r->next = new ListNode($item);
-            } else {
-                $r = new ListNode($item);
-            }
+        $prev = null;
+        foreach (array_reverse($arr) as $item) {
+            $r = new ListNode($item, $prev);
+            $prev = $r;
         }
         return $r;
     }
