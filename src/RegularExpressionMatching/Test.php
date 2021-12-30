@@ -14,10 +14,10 @@ final class Test extends TestCase
     {
         $solution = new Solution();
 
-//        $this->assertFalse($solution->isMatch('aa', 'a'));
-//        $this->assertTrue($solution->isMatch('aa', 'a*'));
-//        $this->assertTrue($solution->isMatch('ab', '.*'));
-//        $this->assertTrue($solution->isMatch('aab', 'c*a*b'));
+        $this->assertFalse($solution->isMatch('aa', 'a'));
+        $this->assertTrue($solution->isMatch('aa', 'a*'));
+        $this->assertTrue($solution->isMatch('ab', '.*'));
+        $this->assertTrue($solution->isMatch('aab', 'c*a*b'));
         $this->assertTrue($solution->isMatch('aaa', 'a*a'));
     }
 }

@@ -17,6 +17,11 @@ final class Solution
     {
         $s = str_split($s);
         $tokens = $this->tokens($p);
+        return $this->recursiveMatch($s, $tokens);
+    }
+
+    private function recursiveMatch(array $s, array $tokens): bool
+    {
         while (count($s) > 0 && count($tokens) > 0) {
             $char = $s[0];
             $token = $tokens[0];
@@ -30,10 +35,13 @@ final class Solution
                 return false;
             }
 
-            if ($this->zeroOrMore($token)) {
+            if (!$this->zeroOrMore($token)) {
+                array_shift($s);
                 array_shift($tokens);
+            } else {
+                return $this->recursiveMatch(array_slice($s, 1), $tokens) ||
+                    $this->recursiveMatch($s, array_slice($tokens, 1));
             }
-            array_shift($s);
         }
 
         foreach ($tokens as $token) {
