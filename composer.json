@@ -12,11 +12,13 @@
         }
     ],
     "require": {
-        "php": "7.2"
+        "php": "7.2|^8.0",
+        "gmostafa/php-graphql-client": "^1.13"
     },
     "autoload": {
         "psr-4": {
-            "TheToster\\Leetcode\\": "src/"
+            "TheToster\\Leetcode\\": "src/",
+            "TheToster\\LeetcodeHelper\\": "helper/"
         }
     }
 }
