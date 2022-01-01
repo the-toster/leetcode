@@ -25,5 +25,26 @@ final class Solution
      */
     function maxCoins(array $nums): int
     {
+        if (count($nums) === 1) {
+            return $nums[0];
+        }
+
+        $coins = [];
+        for ($i = 0; $i < count($nums); $i++) {
+            $coins[] = $this->calcForI($i, $nums) + $this->maxCoins($this->withoutI($i, $nums));
+        }
+
+        return max($coins);
+    }
+
+    private function calcForI($i, $nums): int
+    {
+        return ($nums[$i - 1] ?? 1) * $nums[$i] * ($nums[$i + 1] ?? 1);
+    }
+
+    private function withoutI($i, $nums): array
+    {
+        array_splice($nums, $i, 1);
+        return $nums;
     }
 }
