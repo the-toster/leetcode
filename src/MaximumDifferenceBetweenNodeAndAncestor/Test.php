@@ -15,6 +15,13 @@ final class Test extends TestCase
         $s = new Solution();
         $this->assertEquals(7, $s->maxAncestorDiff($this->basicTree()));
         $this->assertEquals(3, $s->maxAncestorDiff($this->basicTree2()));
+        $this->assertEquals(2, $s->maxAncestorDiff($this->basicTree3()));
+    }
+
+    private function basicTree3(): TreeNode
+    {
+        //[2,null,0,1]
+        return new TreeNode(2, null, new TreeNode(0, new TreeNode(1)));
     }
 
     private function basicTree(): TreeNode

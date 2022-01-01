@@ -7,41 +7,44 @@ namespace TheToster\Leetcode\MaximumDifferenceBetweenNodeAndAncestor;
 
 final class Solution
 {
-    /**
-     * @param TreeNode $root
-     * @return Integer
-     */
-    function maxAncestorDiff($root): int
+    public function maxAncestorDiff(TreeNode $root): int
     {
-        $v = $root->val;
-
-        $l = $this->findMinMax($root->left);
-        $r = $this->findMinMax($root->right);
-
-        return max(
-            $this->maxDiff($root->val, $l),
-            $this->maxDiff($root->val, $r)
-        );
+        [$diff] = $this->findMinMaxDiff($root);
+        return $diff;
     }
 
-    private function maxDiff($v, $with): ?int
+    private function findMinMaxDiff(TreeNode $node): array
     {
-        if (count($with) === 0) {
-            return 0;
+        if ($this->isLeaf($node)) {
+            return [0, $node->val, $node->val];
+        }
+        $diffs = [];
+        $extremum = [$node->val];
+
+        if ($node->left) {
+            [$diff, $max, $min] = $this->findMinMaxDiff($node->left);
+            $diffs[] = $diff;
+            $diffs[] = abs($node->val - $max);
+            $diffs[] = abs($node->val - $min);
+            $extremum[] = $max;
+            $extremum[] = $min;
         }
 
-        return max([abs($v - max($with)), abs($v - min($with))]);
+        if ($node->right) {
+            [$diff, $max, $min] = $this->findMinMaxDiff($node->right);
+            $diffs[] = $diff;
+            $diffs[] = abs($node->val - $max);
+            $diffs[] = abs($node->val - $min);
+            $extremum[] = $max;
+            $extremum[] = $min;
+        }
+
+
+        return [max($diffs), min($extremum), max($extremum)];
     }
 
-    private function findMinMax(?TreeNode $node): array
+    private function isLeaf(TreeNode $node): bool
     {
-        if (!$node) {
-            return [];
-        }
-
-        $l = $this->findMinMax($node->left);
-        $r = $this->findMinMax($node->right);
-        $variants = array_merge($l, $r, [$node->val]);
-        return [min($variants), max($variants)];
+        return $node->right === null && $node->left === null;
     }
 }
