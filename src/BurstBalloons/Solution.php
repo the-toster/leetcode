@@ -31,10 +31,21 @@ final class Solution
 
         $coins = [];
         for ($i = 0; $i < count($nums); $i++) {
-            $coins[] = $this->calcForI($i, $nums) + $this->maxCoins($this->withoutI($i, $nums));
+            $coins[$i] = $this->calcForI($i, $nums);
+        }
+        $maxSum = max($coins);
+
+        $maxIndexes = [];
+        foreach ($coins as $i => $sum) {
+            if ($sum === $maxSum) {
+                $maxIndexes[$i] = $nums[$i];
+            }
         }
 
-        return max($coins);
+        asort($maxIndexes);
+        $index = array_keys($maxIndexes)[0];
+
+        return $coins[$index] + $this->maxCoins($this->withoutI($index, $nums));
     }
 
     private function calcForI($i, $nums): int
