@@ -7,6 +7,7 @@ namespace TheToster\Leetcode\BurstBalloons;
 
 final class Solution
 {
+    private $cache = [];
     /**
      * You are given n balloons, indexed from 0 to n - 1.
      * Each balloon is painted with a number on it represented by an array nums.
@@ -29,23 +30,17 @@ final class Solution
             return $nums[0];
         }
 
+        $cacheKey = implode('-', $nums);
+        if (isset($this->cache[$cacheKey])) {
+            return $this->cache[$cacheKey];
+        }
+
         $coins = [];
         for ($i = 0; $i < count($nums); $i++) {
-            $coins[$i] = $this->calcForI($i, $nums);
-        }
-        $maxSum = max($coins);
-
-        $maxIndexes = [];
-        foreach ($coins as $i => $sum) {
-            if ($sum === $maxSum) {
-                $maxIndexes[$i] = $nums[$i];
-            }
+            $coins[] = $this->calcForI($i, $nums) + $this->maxCoins($this->withoutI($i, $nums));
         }
 
-        asort($maxIndexes);
-        $index = array_keys($maxIndexes)[0];
-
-        return $coins[$index] + $this->maxCoins($this->withoutI($index, $nums));
+        return $this->cache[$cacheKey] = max($coins);
     }
 
     private function calcForI($i, $nums): int
