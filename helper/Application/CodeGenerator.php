@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace TheToster\LeetcodeHelper\Application;
 
 
+use phpDocumentor\Reflection\DocBlock\Tags\Reference\Reference;
+
 final class CodeGenerator
 {
     public function __construct(
         private readonly ProblemProvider $problemFetcher,
         private readonly string $generationPath,
+        private readonly Filesystem $fs
     ) {
     }
 
@@ -17,15 +20,15 @@ final class CodeGenerator
     {
         [, $slug] = explode('/problems/', trim($problemUrl, '/'));
         $problem = $this->problemFetcher->get($slug);
-        $namespace = $this->namespaceFromTitle($slug);
+        $namespace = $this->namespaceFromSlug($slug);
         $problemPath = $this->generationPath . DIRECTORY_SEPARATOR . $namespace . DIRECTORY_SEPARATOR;
-        file_put_contents($problemPath . 'Solution.php', $problem->template);
-        file_put_contents($problemPath . 'Test.php', file_get_contents($this->testTemplatePath));
+        $this->fs->writeFile($problemPath . 'Solution.php', $problem->template);
+        $this->fs->writeFile($problemPath . 'Test.php', $this->testContent($namespace));
     }
 
-    private function namespaceFromTitle(string $slug): string
+    private function namespaceFromSlug(string $slug): string
     {
-        $camelCased = implode(ucwords(str_replace('-', ' ', preg_replace('~^[a-zA-Z0-9-]~', '', $slug))));
+        $camelCased = implode('', ucwords(str_replace('-', ' ', $slug)));
 
         return $this->namespacePrefix . '\\' . $camelCased;
     }
@@ -44,6 +47,7 @@ final class CodeGenerator
             public function it_can_merge(): void
             {
                 \$s = new Solution();
+                \$this->assertEquals(0, \$s);
             }
         }   
         PHP;
@@ -58,8 +62,6 @@ final class CodeGenerator
 
         namespace $namespace;
         
-        PHP;
-
         PHP;
     }
 }
