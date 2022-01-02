@@ -12,5 +12,7 @@ final class Test extends \PHPUnit\Framework\TestCase
     {
         $s = new Solution();
         $this->assertEquals(3, $s->numPairsDivisibleBy60([30, 20, 150, 100, 40]));
+        $this->assertEquals(3, $s->numPairsDivisibleBy60([60, 60, 60]));
+        $this->assertEquals(1, $s->numPairsDivisibleBy60([20, 40]));
     }
 }

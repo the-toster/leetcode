@@ -9,22 +9,27 @@ final class Solution
 {
     public function numPairsDivisibleBy60(array $time): int
     {
-        $reminders = [];
+        $byReminders = [];
         foreach ($time as $i => $duration) {
             $rem = $duration % 60;
-            if (!isset($reminders[$rem])) {
-                $reminders[$rem] = 0;
+            if (!isset($byReminders[$rem])) {
+                $byReminders[$rem] = [];
             }
 
-            $reminders[$rem]++;
+            $byReminders[$rem][] = $i;
         }
-        ksort($reminders);
 
         $total = 0;
-        foreach ($reminders as $rem => $numberOfSongs) {
-            $complimentaryRem = $rem = 0 ? 0 : 60 - $rem;
-            $numberOfComplimentary = isset($reminders[$complimentaryRem]) ?? 0;
-            $total += max($numberOfComplimentary, $numberOfSongs);
+        foreach ($byReminders as $rem => $indexes) {
+            $complimentaryRem = $rem === 0 ? 0 : 60 - $rem;
+            $complimentaryIndexes = $byReminders[$complimentaryRem] ?? [];
+            foreach ($indexes as $index) {
+                foreach ($complimentaryIndexes as $complimentaryIndex) {
+                    if ($index < $complimentaryIndex) {
+                        $total++;
+                    }
+                }
+            }
         }
 
         return $total;
