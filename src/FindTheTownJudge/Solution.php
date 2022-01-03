@@ -32,6 +32,10 @@ final class Solution
             $isTrustSomeOne[$person] = true;
         }
 
+        if (count($howManyTrustTo) === 0) {
+            return $n === 1 ? 1 : -1;
+        }
+
         arsort($howManyTrustTo);
         $mostTrustable = array_keys($howManyTrustTo)[0];
 

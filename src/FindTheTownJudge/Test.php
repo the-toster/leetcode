@@ -13,6 +13,7 @@ final class Test extends TestCase
     public function it_can_solve(): void
     {
         $s = new Solution();
+        $this->assertEquals(1, $s->findJudge(1, []));
         $this->assertEquals(2, $s->findJudge(2, [[1, 2]]));
         $this->assertEquals(3, $s->findJudge(3, [[1, 3], [2, 3]]));
         $this->assertEquals(-1, $s->findJudge(3, [[1, 3], [2, 3], [3, 1]]));
