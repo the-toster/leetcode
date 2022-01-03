@@ -13,8 +13,8 @@ final class Solution
     {
         $c = $head;
         $toReverse = [];
-        $reversed = $lastReversed = $tail = null;
-        while ($c->next) {
+        $reversed = $tail = null;
+        while ($c) {
             $toReverse[] = $c;
             $c = $c->next;
             if (count($toReverse) === $k) {
@@ -31,12 +31,11 @@ final class Solution
                 //connect previously reversed to new part
                 if ($tail) {
                     $tail->next = $toReverse[$k - 1];
-                } else {
-                    $tail = $toReverse[0];
                 }
 
                 //connect current tail
-                $toReverse[0]->next = $c;
+                $tail = $toReverse[0];
+                $tail->next = $c;
 
                 //then reset
                 $toReverse = [];
