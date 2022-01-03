@@ -16,7 +16,7 @@ final class Test extends TestCase
         $this->assertEquals(15, $s->minCostClimbingStairs([10, 15, 20]));
 
         $this->assertEquals(6, $s->minCostClimbingStairs([1, 100, 1, 1, 1, 100, 1, 1, 100, 1]));
-        $this->assertEquals(6, $s->minCostClimbingStairs($this->longInput()));
+        $this->assertEquals(209040, $s->minCostClimbingStairs($this->longInput()));
     }
 
     private function longInput(): array
