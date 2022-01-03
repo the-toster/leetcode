@@ -25,14 +25,17 @@ final class Solution
     function minCostClimbingStairs(array $cost): int
     {
         $count = count($cost);
-        if ($count === 0) {
+        if ($count === 1) {
             return 0;
         }
         if ($count === 2) {
             return min($cost);
         }
 
-        $prev = $this->minCostClimbingStairs(array_slice($cost, $count - 2));
-        return $prev + min($cost[$count - 1], $cost[$count - 2]);
+        return min(
+            $cost[0] + $this->minCostClimbingStairs(array_slice($cost, 1)),
+            $cost[1] + $this->minCostClimbingStairs(array_slice($cost, 2))
+
+        );
     }
 }
