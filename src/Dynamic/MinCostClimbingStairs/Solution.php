@@ -19,10 +19,20 @@ final class Solution
      * Explanation: You will start at index 1.
      * - Pay 15 and climb two steps to reach the top.
      * The total cost is 15.
-     *
+     * 2 <= cost.length <= 1000
      * @param int[] $cost
      */
     function minCostClimbingStairs(array $cost): int
     {
+        $count = count($cost);
+        if ($count === 0) {
+            return 0;
+        }
+        if ($count === 2) {
+            return min($cost);
+        }
+
+        $prev = $this->minCostClimbingStairs(array_slice($cost, $count - 2));
+        return $prev + min($cost[$count - 1], $cost[$count - 2]);
     }
 }
