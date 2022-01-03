@@ -35,7 +35,6 @@ final class Solution
         return min(
             $cost[0] + $this->minCostClimbingStairs(array_slice($cost, 1)),
             $cost[1] + $this->minCostClimbingStairs(array_slice($cost, 2))
-
         );
     }
 }
