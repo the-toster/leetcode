@@ -12,14 +12,15 @@ final class Solution
      */
     function rob(array $nums): int
     {
-        $s1 = $s2 = 0;
-        foreach ($nums as $i => $v) {
-            if ($i % 2) {
-                $s1 += $v;
-            } else {
-                $s2 += $v;
-            }
+        $n = count($nums);
+        if ($n < 3) {
+            $nums[] = 0;
+            return max($nums);
         }
-        return max($s1, $s2);
+
+        return max(
+            $nums[0] + $this->rob(array_slice($nums, 2)),
+            $nums[1] + $this->rob(array_slice($nums, 3))
+        );
     }
 }
