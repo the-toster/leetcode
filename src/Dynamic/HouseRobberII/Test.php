@@ -16,5 +16,6 @@ final class Test extends TestCase
         $this->assertEquals(3, $s->rob([2, 3, 2]));
         $this->assertEquals(4, $s->rob([1, 2, 3, 1]));
         $this->assertEquals(3, $s->rob([1, 2, 3]));
+        $this->assertEquals(23, $s->rob([3, 6, 9, 12, 14]));
     }
 }
