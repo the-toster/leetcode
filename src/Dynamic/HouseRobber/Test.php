@@ -21,7 +21,7 @@ final class Test extends TestCase
         $this->assertEquals(12, $s->rob([2, 7, 9, 3, 1]));
         $this->assertEquals(4, $s->rob([2, 1, 1, 2]));
         $this->assertEquals(
-            4,
+            7102,
             $s->rob(
                 [
                     226,
