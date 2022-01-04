@@ -13,6 +13,8 @@ final class Test extends TestCase
     public function it_can_solve(): void
     {
         $s = new Solution();
+        $this->assertEquals(3, $s->rob([3]));
+        $this->assertEquals(3, $s->rob([2, 3]));
         $this->assertEquals(3, $s->rob([2, 3, 2]));
         $this->assertEquals(4, $s->rob([1, 2, 3, 1]));
         $this->assertEquals(3, $s->rob([1, 2, 3]));
