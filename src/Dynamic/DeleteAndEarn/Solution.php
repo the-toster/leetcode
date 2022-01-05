@@ -8,36 +8,41 @@ namespace TheToster\Leetcode\Dynamic\DeleteAndEarn;
 final class Solution
 {
     private $cache = [];
+
     /**
      * @param int[] $nums
      */
     public function deleteAndEarn(array $nums): int
     {
-        if (count($nums) === 0) {
-            return 0;
-        }
-        $cacheKey = implode(',', $nums);
-        if (isset($this->cache[$cacheKey])) {
-            return $this->cache[$cacheKey];
-        }
-        $r = [];
-        foreach ($nums as $index => $n) {
-            $r[] = $n + $this->deleteAndEarn($this->filter($nums, $index));
+        sort($nums);
+        $counted = [];
+        foreach ($nums as $n) {
+            $counted[$n] = ($counted[$n] ?? 0) + 1;
         }
 
-        return $this->cache[$cacheKey] = max($r);
+        $sumUsedK = $sumAvoidedK = 0;
+        $prev = -1;
+        foreach ($counted as $k => $count) {
+            $maxOnPreviousStep = max($sumAvoidedK, $sumUsedK);
+            $sumForCurrent = $k * $count;
+
+            if ($k === $prev + 1) {
+                // it near to previous, so if we take current, we should not take previous
+                $sumUsedK = $sumForCurrent + $sumAvoidedK;
+                // what if we take previous? it reset current, so max is max from previous
+                $sumAvoidedK = $maxOnPreviousStep;
+            } else {
+                // we take both
+                $sumUsedK = $sumForCurrent + $maxOnPreviousStep;
+                // or we skip current
+                $sumAvoidedK = $maxOnPreviousStep;
+            }
+
+            $prev = $k;
+        }
+
+        return max($sumUsedK, $sumAvoidedK);
     }
 
-    private function filter(array $nums, int $index): array
-    {
-        $n = $nums[$index];
-        array_splice($nums, $index, 1);
-
-        return array_values(
-            array_filter($nums, function ($i) use ($n) {
-                return $i !== ($n + 1) && $i !== ($n - 1);
-            })
-        );
-    }
 
 }
