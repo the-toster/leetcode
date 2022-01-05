@@ -13,5 +13,6 @@ final class Test extends \PHPUnit\Framework\TestCase
         $s = new Solution();
         $this->assertEquals([["a", "a", "b"], ["aa", "b"]], $s->partition('aab'));
         $this->assertEquals([["a"]], $s->partition('a'));
+        $this->assertEquals([["b", "b"], ["bb"]], $s->partition('bb'));
     }
 }

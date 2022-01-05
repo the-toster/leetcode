@@ -12,15 +12,16 @@ final class Solution
      */
     function partition(string $s): array
     {
-        if (strlen($s) === 1) {
-            return [[$s]];
-        }
 
         $variants = [];
         for ($i = 1; $i <= strlen($s); $i++) {
             $sub = substr($s, 0, $i);
             if ($this->isPalindrome($sub)) {
-                foreach ($this->partition(substr($s, $i)) as $subPartition) {
+                $rest = substr($s, $i);
+                if ($rest === '') {
+                    $variants[] = [$sub];
+                }
+                foreach ($this->partition($rest) as $subPartition) {
                     $variants[] = array_merge([$sub], $subPartition);
                 }
             }
