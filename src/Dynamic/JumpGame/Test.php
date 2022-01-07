@@ -13,6 +13,7 @@ final class Test extends TestCase
     public function it_can_solve(): void
     {
         $s = new Solution();
+        $this->assertEquals(true, $s->canJump([1, 2, 3]));
         $this->assertEquals(true, $s->canJump([0]));
         $this->assertEquals(true, $s->canJump([2, 3, 1, 1, 4]));
         $this->assertEquals(false, $s->canJump([3, 2, 1, 0, 4]));
@@ -127,5 +128,7 @@ final class Test extends TestCase
                 ]
             )
         );
+
+        $this->assertEquals(false, $s->canJump(json_decode(file_get_contents(__DIR__ . '/big.json'))));
     }
 }

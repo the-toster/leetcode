@@ -11,24 +11,31 @@ final class Solution
      * @param int[] $nums
      * @return bool
      */
+    private $cache = [];
+
     function canJump(array $nums): bool
     {
-        $size = count($nums);
+        $this->cache = [];
+        return $this->calc($nums, 0);
+    }
 
-        $maxJump = $nums[0];
-        for ($i = 0; $i <= $maxJump; $i++) {
-            if ($i === $size - 1) {
-                return true;
-            }
+    private function calc(array $nums, int $from): bool
+    {
+        if (isset($this->cache[$from])) {
+            return $this->cache[$from];
+        }
 
-            if ($i < $size && $i > 0) {
-                $rest = array_slice($nums, $i);
-                if ($this->canJump($rest)) {
-                    return true;
-                }
+        $maxJump = $nums[$from];
+        if ($maxJump >= count($nums) - $from - 1) {
+            return $this->cache[$from] = true;
+        }
+
+        for ($i = 1; $i <= $maxJump; $i++) {
+            if ($this->calc($nums, $from + $i)) {
+                return $this->cache[$from] = true;
             }
         }
 
-        return false;
+        return $this->cache[$from] = false;
     }
 }
