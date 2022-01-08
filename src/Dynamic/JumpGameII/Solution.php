@@ -7,17 +7,25 @@ namespace TheToster\Leetcode\Dynamic\JumpGameII;
 
 final class Solution
 {
+    /** @var int[] $nums */
+    private $nums = [];
+
     /** @param int[] $nums */
     function jump(array $nums): int
     {
-        $size = count($nums);
+        $this->nums = $nums;
+        return $this->calc(count($nums));
+    }
+
+    function calc(int $size): int
+    {
         if ($size === 1) {
             return 0;
         }
 
         for ($i = 0; $i < $size; $i++) {
-            if ($nums[$i] >= $size - $i - 1) {
-                return 1 + $this->jump(array_slice($nums, 0, $i + 1));
+            if ($this->nums[$i] >= $size - $i - 1) {
+                return 1 + $this->calc($i + 1);
             }
         }
 
