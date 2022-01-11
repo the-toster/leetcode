@@ -14,15 +14,21 @@ final class Solution
         // score of a pair
         // values[i] + values[j] + i - j
         // find maximum pair score
-        $max = PHP_INT_MIN;
-        for ($i = 0; $i < count($values) - 1; $i++) {
-            for ($j = $i + 1; $j < count($values); $j++) {
-                $max = max(
-                    $values[$i] + $values[$j] + $i - $j,
-                    $max,
-                );
-            }
+
+        $size = count($values);
+        $j = $size - 1;
+        $bestRight = [$j => $values[$j] - $j];
+        for ($j--; $j > 0; $j--) {
+            $bestRight[$j] = max($values[$j] - $j, $bestRight[$j + 1]);
         }
+
+        $max = 0;
+        for ($i = 0; $i < $size - 1; $i++) {
+            $currentLeft = $values[$i] + $i;
+            $bestScoreWithCurrentLeft = $currentLeft + $bestRight[$i + 1];
+            $max = max($bestScoreWithCurrentLeft, $max);
+        }
+
         return $max;
     }
 }
