@@ -10,17 +10,19 @@ final class Solution
     /** @var int[] $prices */
     function maxProfit(array $prices): int
     {
-        $last = count($prices) - 1;
-        $max = [$last => $prices[$last]];
-        for ($i = $last - 1; $i > 0; $i--) {
-            $max[$i] = max($prices[$i], $max[$i + 1]);
-        }
-
-        $min = $prices[0];
+        $min = PHP_INT_MAX;
         $profit = 0;
-        for ($i = 1; $i <= $last; $i++) {
-            $min = min($prices[$i], $min);
-            $profit = max($profit, $max[$i] - $min);
+        $size = count($prices);
+        for ($i = 0; $i < $size; $i++) {
+            $price = $prices[$i];
+            if ($price < $min) {
+                $min = $price;
+                continue;
+            }
+            $t = $price - $min;
+            if ($t > $profit) {
+                $profit = $t;
+            }
         }
 
         return $profit;

@@ -14,5 +14,6 @@ final class Test extends TestCase
     {
         $s = new Solution();
         $this->assertEquals(5, $s->maxProfit([7, 1, 5, 3, 6, 4]));
+        $this->assertEquals(3, $s->maxProfit(json_decode(file_get_contents(__DIR__ . '/big.json'))));
     }
 }
