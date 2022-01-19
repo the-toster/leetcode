@@ -7,42 +7,30 @@ namespace TheToster\Leetcode\Dynamic\DeleteAndEarn;
 
 final class Solution
 {
-    private $cache = [];
 
     /**
      * @param int[] $nums
      */
     public function deleteAndEarn(array $nums): int
     {
+        $dp = [0 => [0, 0]];
+        $prev = 0;
         sort($nums);
-        $counted = [];
-        foreach ($nums as $n) {
-            $counted[$n] = ($counted[$n] ?? 0) + 1;
-        }
-
-        $sumUsedK = $sumAvoidedK = 0;
-        $prev = -1;
-        foreach ($counted as $k => $count) {
-            $maxOnPreviousStep = max($sumAvoidedK, $sumUsedK);
-            $sumForCurrent = $k * $count;
-
-            if ($k === $prev + 1) {
-                // it near to previous, so if we take current, we should not take previous
-                $sumUsedK = $sumForCurrent + $sumAvoidedK;
-                // what if we take previous? it reset current, so max is max from previous
-                $sumAvoidedK = $maxOnPreviousStep;
-            } else {
-                // we take both
-                $sumUsedK = $sumForCurrent + $maxOnPreviousStep;
-                // or we skip current
-                $sumAvoidedK = $maxOnPreviousStep;
+        for ($i = 0; $i < count($nums); $i++) {
+            $maxPrev = max($dp[$prev]);
+            $n = $nums[$i];
+            $sum = $n;
+            while ($n === ($nums[$i + 1] ?? -1)) {
+                $sum += $n;
+                $i = $i + 1;
             }
 
-            $prev = $k;
+            $prevAnsw = $prev === $n - 1 ? $dp[$prev][0] : $maxPrev;
+            $dp[$n] = [$maxPrev, $sum + $prevAnsw];
+            $prev = $n;
         }
 
-        return max($sumUsedK, $sumAvoidedK);
+        return max($dp[$prev]);
     }
-
 
 }
