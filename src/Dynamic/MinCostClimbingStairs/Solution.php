@@ -8,6 +8,7 @@ namespace TheToster\Leetcode\Dynamic\MinCostClimbingStairs;
 final class Solution
 {
     private $cache = [];
+
     /**
      * You are given an integer array cost where cost[i] is the cost of ith step on a staircase.
      * Once you pay the cost, you can either climb one or two steps.
@@ -23,25 +24,15 @@ final class Solution
      * 2 <= cost.length <= 1000
      * @param int[] $cost
      */
-    function minCostClimbingStairs(array $cost): int
+    function minCostClimbingStairs($cost)
     {
-        $count = count($cost);
-        if ($count === 1) {
-            return 0;
+        $size = count($cost);
+        $dp = [0 => $cost[0], 1 => $cost[1]];
+
+        for ($i = 2; $i < $size; $i++) {
+            $dp[$i] = $cost[$i] + min($dp[$i - 1], $dp[$i - 2]);
         }
 
-        if ($count === 2) {
-            return min($cost);
-        }
-
-        $cacheKey = implode('-', $cost);
-        if (isset($this->cache[$cacheKey])) {
-            return $this->cache[$cacheKey];
-        }
-
-        return $this->cache[$cacheKey] = min(
-            $cost[0] + $this->minCostClimbingStairs(array_slice($cost, 1)),
-            $cost[1] + $this->minCostClimbingStairs(array_slice($cost, 2))
-        );
+        return min($dp[$size - 1], $dp[$size - 2]);
     }
 }
